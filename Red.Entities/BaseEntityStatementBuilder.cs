@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Diagnostics;
 
 namespace Red.Entities
 {
@@ -70,14 +71,16 @@ namespace Red.Entities
             {
                 foreach (var predicate in request.Predicates)
                 {
-                    string matchMethod = request.Match == MatchRequirement.All ? " AND " : " OR ";
-                    string predicateString = "(" + string.Join(matchMethod, this.ExpandPredicate(predicate, request.Parameters)) + ")";
+                    string predicateMatchMethod = predicate.Match == MatchRequirement.All ? " AND " : " OR ";
+                    string predicateString = "(" + string.Join(predicateMatchMethod, this.ExpandPredicate(predicate, request.Parameters)) + ")";
                     predicateStrings.Add(predicateString);
                 }
                 builder.Append(" WHERE ");
-                builder.Append(String.Join(" AND ", predicateStrings));
+                string requestMatchMethod = request.Match == MatchRequirement.All ? " AND " : " OR ";
+                builder.Append(String.Join(requestMatchMethod, predicateStrings));
             }
             string result = builder.ToString();
+            Debug.WriteLine(result);
             return result;
         }
 
@@ -91,46 +94,46 @@ namespace Red.Entities
                 switch (condition.Condition)
                 {
                     case ComparisonCondition.Equals:
-                        stringConditions.Add($"{FormatFieldName(condition.FieldName)} = {FormatParameterName(condition.ParameterName)}");
+                        stringConditions.Add($"({FormatFieldName(condition.FieldName)} = {FormatParameterName(condition.ParameterName)})");
                         break;
                     case ComparisonCondition.NotEquals:
-                        stringConditions.Add($"{FormatFieldName(condition.FieldName)} <> {FormatParameterName(condition.ParameterName)}");
+                        stringConditions.Add($"({FormatFieldName(condition.FieldName)} <> {FormatParameterName(condition.ParameterName)})");
                         break;
                     case ComparisonCondition.Contains:
-                        stringConditions.Add($"{IndexOfFunctionName()}({FormatFieldName(condition.FieldName)}, {FormatParameterName(condition.ParameterName)}) > 0");
+                        stringConditions.Add($"({IndexOfFunctionName()}({FormatFieldName(condition.FieldName)}, {FormatParameterName(condition.ParameterName)}) > 0)");
                         break;
                     case ComparisonCondition.DoesNotContain:
-                        stringConditions.Add($"{IndexOfFunctionName()}({FormatFieldName(condition.FieldName)}, {FormatParameterName(condition.ParameterName)}) = 0");
+                        stringConditions.Add($"({IndexOfFunctionName()}({FormatFieldName(condition.FieldName)}, {FormatParameterName(condition.ParameterName)}) = 0)");
                         break;
                     case ComparisonCondition.LessThan:
-                        stringConditions.Add($"{FormatFieldName(condition.FieldName)} < {FormatParameterName(condition.ParameterName)}");
+                        stringConditions.Add($"({FormatFieldName(condition.FieldName)} < {FormatParameterName(condition.ParameterName)})");
                         break;
                     case ComparisonCondition.GreaterThan:
-                        stringConditions.Add($"{FormatFieldName(condition.FieldName)} > {FormatParameterName(condition.ParameterName)}");
+                        stringConditions.Add($"({FormatFieldName(condition.FieldName)} > {FormatParameterName(condition.ParameterName)})");
                         break;
                     case ComparisonCondition.LessThanOrEqual:
-                        stringConditions.Add($"{FormatFieldName(condition.FieldName)} <= {FormatParameterName(condition.ParameterName)}");
+                        stringConditions.Add($"({FormatFieldName(condition.FieldName)} <= {FormatParameterName(condition.ParameterName)})");
                         break;
                     case ComparisonCondition.GreaterThanOrEqual:
-                        stringConditions.Add($"{FormatFieldName(condition.FieldName)} >= {FormatParameterName(condition.ParameterName)}");
+                        stringConditions.Add($"({FormatFieldName(condition.FieldName)} >= {FormatParameterName(condition.ParameterName)})");
                         break;
                     case ComparisonCondition.Between:
-                        stringConditions.Add($"{FormatFieldName(condition.FieldName)} BETWEEN {FormatParameterName(condition.ParameterName)} AND {FormatParameterName(condition.SecondParameterName)}");
+                        stringConditions.Add($"({FormatFieldName(condition.FieldName)} BETWEEN {FormatParameterName(condition.ParameterName)} AND {FormatParameterName(condition.SecondParameterName)})");
                         break;
                     case ComparisonCondition.NotBetween:
-                        stringConditions.Add($"{FormatFieldName(condition.FieldName)} NOT BETWEEN {FormatParameterName(condition.ParameterName)} AND {FormatParameterName(condition.SecondParameterName)}");
+                        stringConditions.Add($"({FormatFieldName(condition.FieldName)} NOT BETWEEN {FormatParameterName(condition.ParameterName)} AND {FormatParameterName(condition.SecondParameterName)})");
                         break;
                     case ComparisonCondition.BeginsWith:
-                        stringConditions.Add($"{IndexOfFunctionName()}({FormatFieldName(condition.FieldName)}, {FormatParameterName(condition.ParameterName)}) = 1");
+                        stringConditions.Add($"({IndexOfFunctionName()}({FormatFieldName(condition.FieldName)}, {FormatParameterName(condition.ParameterName)}) = 1)");
                         break;
                     case ComparisonCondition.EndsWith:
-                        stringConditions.Add($"{IndexOfFunctionName()}({FormatFieldName(condition.FieldName)}, {FormatParameterName(condition.ParameterName)}) = LENGTH({condition.FieldName}-LENGTH({FormatParameterName(condition.ParameterName)}))");
+                        stringConditions.Add($"({IndexOfFunctionName()}({FormatFieldName(condition.FieldName)}, {FormatParameterName(condition.ParameterName)}) = LENGTH({condition.FieldName}-LENGTH({FormatParameterName(condition.ParameterName)})))");
                         break;
                     case ComparisonCondition.DoesNotBeginWith:
-                        stringConditions.Add($"{IndexOfFunctionName()}({FormatFieldName(condition.FieldName)}, {FormatParameterName(condition.ParameterName)}) <> 1");
+                        stringConditions.Add($"({IndexOfFunctionName()}({FormatFieldName(condition.FieldName)}, {FormatParameterName(condition.ParameterName)}) <> 1)");
                         break;
                     case ComparisonCondition.DoesNotEndWith:
-                        stringConditions.Add($"{IndexOfFunctionName()}({FormatFieldName(condition.FieldName)}, {FormatParameterName(condition.ParameterName)}) <> LENGTH({condition.FieldName}-LENGTH({FormatParameterName(condition.ParameterName)}))");
+                        stringConditions.Add($"({IndexOfFunctionName()}({FormatFieldName(condition.FieldName)}, {FormatParameterName(condition.ParameterName)}) <> LENGTH({condition.FieldName}-LENGTH({FormatParameterName(condition.ParameterName)})))");
                         break;
                     default:
                         throw new NotSupportedException($"Condition '{condition.Condition}' is not supported.");

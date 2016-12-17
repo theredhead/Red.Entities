@@ -170,7 +170,6 @@ namespace Red.Entities
             set { this[IDENTITY_FIELD_NAME] = value; }
         }
 
-
         public Entity(EntityType entityType)
         {
             EntityType = entityType;

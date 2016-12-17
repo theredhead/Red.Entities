@@ -14,11 +14,14 @@ namespace Red.Entities
 
         public string[] FieldNames { get; private set; }
 
+        public string[] SearchableFieldNames { get; private set; }
+
         public EntityType(EntityDatabase database, string tableName, string[] fieldNames)
         {
             Database = database;
             TableName = tableName;
             FieldNames = fieldNames;
+            SearchableFieldNames = FieldNames;
         }
 
         private Type _instanceType = typeof(Entity);
@@ -43,7 +46,38 @@ namespace Red.Entities
             }
         }
 
-        public EntityFetchRequest CreateFetchRequest()
+        /// <summary>
+        /// Search for all the specified searchText in the given fieldNames.
+        /// Will find records where every word from searchtext appears in at least one field.
+        /// 
+        /// If no FieldNames are given, this will search in all columns designated searchable by SearchableFieldNames
+        /// </summary>
+        /// <param name="searchText">Search text.</param>
+        /// <param name="fieldNames">Field names.</param>
+        public virtual IEnumerable<Entity> Search(string searchText, string[] fieldNames = null)
+        {
+            if (fieldNames == null)
+                fieldNames = SearchableFieldNames;
+
+            string[] searchSnippets = searchText.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+            var request = CreateFetchRequest();
+            request.Match = MatchRequirement.All;
+
+            foreach (string searchSnippet in searchSnippets)
+            {
+                var predicate = request.CreatePredicate();
+                foreach (string fieldName in fieldNames)
+                {
+                    predicate.WhereStringFieldContains(fieldName, searchSnippet);
+                }
+                predicate.Match = MatchRequirement.Any;
+            }
+
+            return Fetch(request);
+        }
+
+        public virtual EntityFetchRequest CreateFetchRequest()
         {
             var request = new EntityFetchRequest(this);
             return request;

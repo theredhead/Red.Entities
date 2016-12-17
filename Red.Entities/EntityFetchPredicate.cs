@@ -32,6 +32,8 @@ namespace Red.Entities
             }
         }
 
+        public MatchRequirement Match { get; set; } = MatchRequirement.All;
+
         protected string GetOrCreateParameterName(string name, object value)
         {
             if (parameters.ContainsValue(value))

@@ -10,20 +10,8 @@ namespace Red.Entities.Designer.Site
         {
             base.OnLoad(e);
 
-            var db = Global.Current.Database;
-
-            var request = db.Articles.CreateFetchRequest();
-            var predicate = request.CreatePredicate();
-
-            predicate
-                .WhereStringFieldContains("Code", "ABC")
-                .WhereDecimalFieldBetween("UnitPrice", 1.0M, 100.0M);
-
-            //var entities = db.Fetch(request);
-
-            repeater.DataSource = db.Fetch(request);
+            repeater.DataSource = Global.Current.Database.Articles.Search("ab bc");
             repeater.DataBind();
-
         }
     }
 }
