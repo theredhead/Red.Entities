@@ -14,6 +14,7 @@ namespace Red.Entities
 
         abstract public string BuildSelectCommandText(EntityFetchRequest request);
 
+        abstract public string FormatFieldName(string fieldName);
         abstract public string FormatParameterName(string parameterName);
     }
 }

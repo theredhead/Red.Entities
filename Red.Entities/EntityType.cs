@@ -53,6 +53,10 @@ namespace Red.Entities
         {
             return Database.Fetch(request);
         }
+        public IEnumerable<Entity> LazilyFetch(EntityFetchRequest request)
+        {
+            return Database.LazilyFetch(request);
+        }
 
         public string Name
         {

@@ -44,6 +44,7 @@
     <Compile Include="MatchRequirement.cs" />
     <Compile Include="EntityFetchRequest.cs" />
     <Compile Include="EntityDatabase.cs" />
+    <Compile Include="BaseEntityStatementBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />

@@ -40,5 +40,14 @@ namespace Red.Entities
             }
             return fetched;
         }
+
+        public IEnumerable<Entity> LazilyFetch(EntityFetchRequest request)
+        {
+            foreach (Entity entity in request.EntityType.LazilyFetch(request))
+            {
+                Track(entity);
+                yield return entity;
+            }
+        }
     }
 }
