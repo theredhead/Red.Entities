@@ -12,3 +12,29 @@ database but that will be expanded to create Entity implementations as well and 
 able to generate an entire tiered web application from an entity design. That should alow getting an
 application up and running almost instantaneous and allow for one-off code generation to aid in rapid
 application development for complicated trees of data.
+
+querying API looks like this:
+
+    EntitiesDatabase db = Global.Current.Database;
+
+    var request = db.Articles.CreateFetchRequest();
+    var predicate = request.CreatePredicate();
+
+    predicate
+        .WhereStringFieldContains("Code", "ABC")
+        .WhereDecimalFieldBetween("UnitPrice", 1.0M, 100.0M);
+
+    var entities = db.Fetch(request);
+
+    repeater.DataSource = entities;
+    repeater.DataBind();
+
+Parameterized SQL is generated behind the scenes to make the above code produce these queries:
+
+When using MySqlEntityStatementBuilder:
+	SELECT `Articles`.* FROM `Articles` WHERE INSTR(`Code`, @Code) > 0 AND `UnitPrice` BETWEEN @UnitPrice AND @UnitPrice1
+
+When using SqlServerEntityStatementBuilder:
+	SELECT [Articles].* FROM [Articles] WHERE INSTR([Code], @Code) > 0 AND [UnitPrice] BETWEEN @UnitPrice AND @UnitPrice1
+
+
