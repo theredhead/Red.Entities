@@ -17,6 +17,7 @@
 		});
 
 		body.appendChild(tb);
+		body.appendChild(document.createElement('br'));
 		body.appendChild(button);
 	};
 

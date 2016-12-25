@@ -14,6 +14,11 @@ using Red.Utility;
 
 namespace Red.Entities.Web
 {
+	interface IWebSocketServer
+	{
+		void SendToAll(string message);
+	}
+
 	class RequestHeaders : Dictionary<string, string>
 	{
 		public string FirstLine { get; set; }
@@ -64,7 +69,7 @@ namespace Red.Entities.Web
 		private bool ShouldBeRunning { get; set; } = true;
 		public string ClientKey { get { return _secWebSocketKey ?? "[Identification Pending]"; } }
 
-		public WebSocketClient(TcpClient client)
+		public WebSocketClient(TcpClient client) //, IWebSocketServer server)
 		{
 			_client = client;
 			_stream = client.GetStream();
@@ -142,6 +147,66 @@ namespace Red.Entities.Web
 		protected virtual void messageRecieved(string message)
 		{
 			Log(message);
+
+			Broadcast(message.ToReversedString());
+		}
+
+		public void Broadcast(String message)
+		{
+
+			byte[] bytes = Encoding.UTF8.GetBytes(message);
+
+			int headerLength = 0;
+			byte[] header = new byte[10];
+
+			header[0] = (byte)129;
+
+			if (bytes.Length <= 125)
+			{
+				header[1] = (byte)bytes.Length;
+				headerLength = 2;
+			}
+			else if (bytes.Length >= 126 && bytes.Length <= 65535)
+			{
+				header[1] = (byte)126;
+				int len = bytes.Length;
+				header[2] = (byte)((len >> 8) & (byte)255);
+				header[3] = (byte)(len & (byte)255);
+				headerLength = 4;
+			}
+			else
+			{
+				header[1] = (byte)127;
+				int len = bytes.Length;
+				header[2] = (byte)((len >> 56) & (byte)255);
+				header[3] = (byte)((len >> 48) & (byte)255);
+				header[4] = (byte)((len >> 40) & (byte)255);
+				header[5] = (byte)((len >> 32) & (byte)255);
+				header[6] = (byte)((len >> 24) & (byte)255);
+				header[7] = (byte)((len >> 16) & (byte)255);
+				header[8] = (byte)((len >> 8) & (byte)255);
+				header[9] = (byte)(len & (byte)255);
+				headerLength = 10;
+			}
+
+			int frameLength = headerLength + bytes.Length;
+
+			byte[] framedMessage = new byte[frameLength];
+
+			int ix = 0;
+			for (int i = 0; i < headerLength; i++)
+			{
+				framedMessage[ix] = header[i];
+				ix++;
+			}
+			for (int i = 0; i < bytes.Length; i++)
+			{
+				framedMessage[ix] = bytes[i];
+				ix++;
+			}
+
+			_stream.Write(framedMessage, 0, framedMessage.Length);
+			_stream.Flush();
 		}
 
 		protected virtual void Log(string message)

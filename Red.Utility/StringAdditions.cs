@@ -46,5 +46,12 @@ namespace Red.Utility
 		{
 			return Encoding.UTF8.GetString(_sha1Provider.ComputeHash(Encoding.UTF8.GetBytes(input)));
 		}
+
+		static public string ToReversedString(this string text)
+		{
+			char[] characters = text.ToCharArray();
+			Array.Reverse(characters);
+			return new string(characters);
+		}
 	}
 }
