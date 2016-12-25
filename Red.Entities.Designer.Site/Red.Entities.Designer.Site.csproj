@@ -92,6 +92,7 @@
     <Content Include="Global.asax" />
     <Content Include="packages.config" />
     <Content Include="index.aspx" />
+    <Content Include="Scripts\Socket.js" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Global.asax.cs">

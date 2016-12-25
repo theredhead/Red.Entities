@@ -3,10 +3,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{58234BED-75BB-4ED8-8B48-106D34CACBFC}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <RootNamespace>Red.Entities</RootNamespace>
-    <AssemblyName>Red.Entities</AssemblyName>
+    <ProjectGuid>{4FBD50BB-5B9F-416C-813F-00B32A0CB0D1}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Red.Entities.Server</RootNamespace>
+    <AssemblyName>Red.Entities.Server</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -17,52 +17,39 @@
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <ConsolePause>false</ConsolePause>
+    <ExternalConsole>true</ExternalConsole>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <ConsolePause>false</ConsolePause>
+    <ExternalConsole>true</ExternalConsole>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Net" />
+    <Reference Include="MySql.Data">
+      <HintPath>..\packages\MySql.Data.6.9.9\lib\net45\MySql.Data.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Entity.cs" />
-    <Compile Include="EntityType.cs" />
-    <Compile Include="EntityHub.cs" />
-    <Compile Include="EntityStatementBuilder.cs" />
-    <Compile Include="MySqlEntityStatementBuilder.cs" />
-    <Compile Include="SqlServerEntityStatementBuilder.cs" />
-    <Compile Include="EntityFetchPredicate.cs" />
-    <Compile Include="EntityFetchCondition.cs" />
-    <Compile Include="ComparisonCondition.cs" />
-    <Compile Include="MatchRequirement.cs" />
-    <Compile Include="EntityFetchRequest.cs" />
-    <Compile Include="EntityDatabase.cs" />
-    <Compile Include="BaseEntityStatementBuilder.cs" />
-    <Compile Include="Web\EntityServer.cs" />
-    <Compile Include="Web\RemoteMethodAttribute.cs" />
-    <Compile Include="Web\WebSocket.cs" />
-    <Compile Include="Web\Frame.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="README.md" />
-  </ItemGroup>
-  <ItemGroup>
+    <ProjectReference Include="..\Red.Entities\Red.Entities.csproj">
+      <Project>{58234BED-75BB-4ED8-8B48-106D34CACBFC}</Project>
+      <Name>Red.Entities</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Red.Utility\Red.Utility.csproj">
       <Project>{062A0A17-A966-4B13-A705-CFCD7DE8FECE}</Project>
       <Name>Red.Utility</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Web\" />
+    <None Include="app.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

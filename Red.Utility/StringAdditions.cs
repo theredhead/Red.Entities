@@ -34,22 +34,17 @@ namespace Red.Utility
 
 		static public string ToBase64EncodedString(this string plainText)
 		{
-			var plainTextBytes = Encoding.UTF8.GetBytes(plainText);
-			return Convert.ToBase64String(plainTextBytes);
+			return Convert.ToBase64String(Encoding.UTF8.GetBytes(plainText));
 		}
 
 		static public string ToBase64DecodedString(this string base64EncodedData)
 		{
-			var base64EncodedBytes = Convert.FromBase64String(base64EncodedData);
-			return Encoding.UTF8.GetString(base64EncodedBytes);
+			return Encoding.UTF8.GetString(Convert.FromBase64String(base64EncodedData));
 		}
 
 		static public string ToSHA1HashedString(this string input)
 		{
-			var hash = _sha1Provider.ComputeHash(Encoding.UTF8.GetBytes(input));
-			return string.Join("", hash.Select(b => b.ToString("x2")).ToArray());
+			return Encoding.UTF8.GetString(_sha1Provider.ComputeHash(Encoding.UTF8.GetBytes(input)));
 		}
-
-
 	}
 }

@@ -9,10 +9,11 @@
 		<asp:Repeater runat="server" id="repeater">
 			<ItemTemplate>
 				<div>
-						<div><label>Code:</label><span><%# DataBinder.Eval(Container.DataItem, "Code") %></span></div>
+					<div><label>Code:</label><span><%# DataBinder.Eval(Container.DataItem, "Code") %></span></div>
 				</div>
 			</ItemTemplate>
 		</asp:Repeater>
 	</form>
+	<script type="text/javascript" src="<%= ResolveUrl("~/Scripts/Socket.js") %>"></script>
 </body>
 </html>

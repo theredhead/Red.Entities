@@ -33,6 +33,7 @@
     <Compile Include="StringAdditions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DateTimeAdditions.cs" />
+    <Compile Include="ArrayAdditions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
