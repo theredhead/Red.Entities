@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Red.Utility.Tests", "Red.Ut
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Red.Entities.Server", "Red.Entities.Server\Red.Entities.Server.csproj", "{4FBD50BB-5B9F-416C-813F-00B32A0CB0D1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Red.Entities.Tests", "Red.Entities.Tests\Red.Entities.Tests.csproj", "{29EE30F6-18D8-4DE9-9162-BB7587324781}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,5 +45,9 @@ Global
 		{4FBD50BB-5B9F-416C-813F-00B32A0CB0D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4FBD50BB-5B9F-416C-813F-00B32A0CB0D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4FBD50BB-5B9F-416C-813F-00B32A0CB0D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29EE30F6-18D8-4DE9-9162-BB7587324781}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29EE30F6-18D8-4DE9-9162-BB7587324781}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29EE30F6-18D8-4DE9-9162-BB7587324781}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29EE30F6-18D8-4DE9-9162-BB7587324781}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
