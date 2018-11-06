@@ -32,9 +32,19 @@ querying API looks like this:
 Parameterized SQL is generated behind the scenes to make the above code produce these queries:
 
 When using MySqlEntityStatementBuilder:
-	SELECT `Articles`.* FROM `Articles` WHERE INSTR(`Code`, @Code) > 0 AND `UnitPrice` BETWEEN @UnitPrice AND @UnitPrice1
-
+````
+	SELECT `Articles`.* 
+	FROM `Articles` 
+	WHERE 
+		INSTR(`Code`, @Code) > 0 
+	AND	`UnitPrice` BETWEEN @UnitPrice AND @UnitPrice1
+````
 When using SqlServerEntityStatementBuilder:
-	SELECT [Articles].* FROM [Articles] WHERE INSTR([Code], @Code) > 0 AND [UnitPrice] BETWEEN @UnitPrice AND @UnitPrice1
-
+````
+	SELECT [Articles].* 
+	FROM [Articles] 
+	WHERE 
+		INSTR([Code], @Code) > 0 
+	AND	[UnitPrice] BETWEEN @UnitPrice AND @UnitPrice1
+````
 
